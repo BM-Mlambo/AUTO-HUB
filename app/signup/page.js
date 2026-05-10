@@ -1,24 +1,70 @@
+"use client"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+
+
+
 export default function Signup(){
+    const router=useRouter()
+    const[name, setName]=useState("")
+    const[email, setEmail]=useState("")
+    const[password, setPassword]=useState("")
+
+
+    const handleSubmit=async (e)=>{
+        e.preventDefault()
+        //Collects all input values into one object.
+        const formData={
+            name,
+            email,
+            password,
+
+        }
+        //Sends data to the backend api
+        const res=await fetch("/api/signup",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(formData)
+            
+        })
+        //Waits for response from the backend.
+        const data=await res.json()
+        console.log(data)
+        //Clears the form after a succesful signup.
+        setName("")
+        setEmail("")
+        setPassword("")
+        //Redirect user to login page.
+        router.push("/login")
+    }
     return(
         <div className="flex justify-center items-center min-h-screen">
             <div  className="w-full max-w-xl p-10 border rounded-lg shadow-sm">
                 <h1 className="text-3xl font-bold text-green-700 text-center">Create account</h1>
-                <form className="mt-6 flex flex-col gap-4">
+                <form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit}>
                     <input
                     type="text"
                     placeholder="full name"
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
                     className="border p-3 rounded-md placeholder-grey-500"
                     />
 
                     <input
                     type="email"
                     placeholder="email adress"
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
                     className="border p-3 rounded-md placeholder-grey-500"
                     />
 
                     <input
                     type="Password"
                     placeholder="password"
+                    value={password}
+                    onChange={(e)=>setPassword(e.target.value)}
                     className="border p-3 rounded-md placeholder-grey-500"
                     />
 
