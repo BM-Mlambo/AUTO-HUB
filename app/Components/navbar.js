@@ -1,4 +1,21 @@
+"use client"
+import { useEffect,useState,Fragment } from "react"
 export default function Navbar(){
+    const[user,setUser]=useState(null)
+    useEffect(()=>{
+        try{
+            const loggedInuser=localStorage.getItem("user")
+            if(!loggedInuser ||loggedInuser==="undefined")return
+            setUser(JSON.parse(loggedInuser))
+        }
+        catch(error){
+            console.log("invalid User in local storage")
+            localStorage.removeItem("user")
+        }
+    },[])
+    const getInitials=(email)=>{
+        return email ? email.charAt(0).toUpperCase() : "?"
+    }
     return(
         <nav className="flex justify-between items-center px-8 py-4 bg-green-50 border-b border-green-200">
             <h1 className="text-green-700 text-4xl font-bold">AutoHub</h1>
@@ -10,9 +27,27 @@ export default function Navbar(){
 
             </div>
             <div className="flex items-center gap-4">
-                <a href="/login" className="text-green-700 font-medium hover:text-green-900">Login</a>
+                {
+                    user ? (
+                        <Fragment>
+                            <p className="text-grey-700 font-medium">Welcome, {user.name}</p>
+                            <div className="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-centre font-bold">
+                                {getInitials(user.email)}
+                            </div>
+                        </Fragment>
+                    ):(
+                        <Fragment>
+                             <a href="/login" className="text-green-700 font-medium hover:text-green-900">Login</a>
                 <a href="/signup" className="bg-green-600 text-white px-4 py-1 rounded-md hover:bg-green-700 transition">Signup</a>
 
+                            
+
+
+                        </Fragment>
+                    )
+
+                }
+               
             </div>
 
         </nav>
