@@ -32,6 +32,7 @@ export default function Login(){
         })
         const data=await res.json()
         console.log(data)
+        localStorage.setItem("user",JSON.stringify(data.user))
         setEmail("")
         setPassword("")
         router.push("/")
@@ -66,6 +67,9 @@ export default function Login(){
 
                     </button>
     
+</div>
+<div className="flex justify-end">
+    <a href="/forgot-password" className="text-sm text-green-600 hover:underline">Forgot password?</a>
 </div>
                     <button className="bg-green-600 text-white py-3 rounded-md">
                         {loading ?"logging in..." :"login"}

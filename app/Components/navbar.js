@@ -16,6 +16,10 @@ export default function Navbar(){
     const getInitials=(email)=>{
         return email ? email.charAt(0).toUpperCase() : "?"
     }
+    const handleLogout=()=>{
+        localStorage.removeItem("user")
+        window.location.href="/"
+    }
     return(
         <nav className="flex justify-between items-center px-8 py-4 bg-green-50 border-b border-green-200">
             <h1 className="text-green-700 text-4xl font-bold">AutoHub</h1>
@@ -31,9 +35,10 @@ export default function Navbar(){
                     user ? (
                         <Fragment>
                             <p className="text-grey-700 font-medium">Welcome, {user.name}</p>
-                            <div className="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-centre font-bold">
+                            <div className="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
                                 {getInitials(user.email)}
                             </div>
+                            <button onClick={handleLogout} className="text-red-600 font-medium">Log out</button>
                         </Fragment>
                     ):(
                         <Fragment>
